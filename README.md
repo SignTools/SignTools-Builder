@@ -4,6 +4,24 @@ This is a free and simple builder server for [ios-signer-service](https://github
 
 You only need to configure one builder. If you already configured a CI provider as your builder, you don't need to do anything here. This project is aimed at people who want to have a self-hosted builder.
 
+## Important
+
+### Security
+
+This server requires the use of an authentication key so that only the web service can control your builder. However, there is no built-in support for HTTPS or any other form of encryption. Therefore:
+
+> :warning: **Anybody with access to the builder's network can potentially manipulate the builder to execute any code that they want on your machine.**
+
+To prevent this, only deploy this server in a trusted environment, or even better, wrap the server in HTTPS yourself using a reverse proxy like nginx.
+
+### Side effects on your Mac
+
+While the server will do its best to keep changes to your Mac at a minimum, certain changes are inevitable. The biggest one to know is:
+
+> :warning: **Your keychain will be swapped out during signing and restored back afterwards.**
+
+It is highly recommended that you dedicate this Mac exclusively as a builder. Using it for other purposes, especially at the same time as a sign job is running, could lead to random issues.
+
 ## Setup
 
 All the steps should be performed on your builder Mac.
@@ -21,21 +39,13 @@ All the steps should be performed on your builder Mac.
    rm master.zip
    ```
 
-Important:
-
 > :warning: **Remember to update the signing files from above every time that you update the signing service. Otherwise you may experience random issues.**
-
-This server requires the use of an authentication key so that only the web service can control your builder. However, there is no built-in support for HTTPS or any other form of encryption. Therefore:
-
-> :warning: **Anybody with access to the builder's network can potentially manipulate the builder to execute any code that they want on your machine.**
-
-To prevent this, only deploy this server in a trusted environment, or even better, wrap the server in HTTPS yourself using a reverse proxy like nginx.
-
-The authentication key has to be at least 8 characters long. Note it down - you will need to put it in your `ios-signer-service`'s configuration file later on.
 
 ## Running
 
-When starting the server, you will want to use the same auth key and signing files from above and pass them as arguments:
+You need to make up an authentication key. It has to be at least 8 characters long. Note it down - you will need to put it in your `ios-signer-service`'s configuration file later on.
+
+To start the server, use the auth key and signing files from before and pass them as arguments:
 
 ```bash
 ./ios-signer-builder -key "SOME_SECRET_KEY" -files "ios-signer-ci-master"
