@@ -16,11 +16,11 @@ To prevent this, only deploy this server in a trusted environment, or even bette
 
 ### Side effects on your Mac
 
-While the server will do its best to keep changes to your Mac at a minimum, certain changes are inevitable. The biggest one to know is:
+While the server will do its best to keep changes to your Mac at a minimum, there is one important exception:
 
-> :warning: **Your keychain will be swapped out during signing and restored back afterwards.**
+> :warning: **When signing with a developer account, your default keychain will be changed at the start of the process and restored afterwards. Certificate + provisioning profile is unaffected.**
 
-It is highly recommended that you dedicate this Mac exclusively as a builder. Using it for other purposes, especially at the same time as a sign job is running, could lead to random issues.
+It is highly recommended that you dedicate this Mac exclusively as a builder. Using it for other purposes, especially at the same time as a sign job is running, could lead to undefined issues.
 
 ## Setup
 
