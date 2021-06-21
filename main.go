@@ -40,6 +40,7 @@ func mainE() error {
 		"will be included in each sign job. Should at least contain a signer script 'sign.sh'")
 	authKey := flag.String("key", "", "Auth key the web service must use to talk to this server")
 	jobTimeout := flag.Uint64("timeout", 15, "Job timeout in minutes")
+	entrypoint := flag.String("entrypoint", "sign.sh", "Entrypoint script to run when signing")
 	flag.Parse()
 
 	if *signFilesDir == "" || *authKey == "" {
@@ -82,7 +83,7 @@ func mainE() error {
 				for key, val := range secrets.Load().(map[string]string) {
 					signEnv = append(signEnv, key+"="+val)
 				}
-				cmd := exec.CommandContext(ctx, filepath.Join(workDir, "sign.sh"))
+				cmd := exec.CommandContext(ctx, filepath.Join(workDir, *entrypoint))
 				cmd.Dir = workDir
 				cmd.Env = signEnv
 				if output, err := cmd.CombinedOutput(); err != nil {
