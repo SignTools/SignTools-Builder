@@ -1,4 +1,4 @@
-# iOS Signer Builder
+# SignTools Builder
 
 This is a free and simple builder server for [SignTools](https://github.com/SignTools/SignTools). This project is the self-hosted alternative of [SignTools-CI](https://github.com/SignTools/SignTools-CI) - instead of using a Continuous Integration (CI) provider, this server turns one of your very own Macs into a builder used to pull, sign, and upload any iOS apps to your `SignTools` service.
 
