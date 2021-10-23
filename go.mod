@@ -1,4 +1,4 @@
-module ios-signer-builder
+module SignTools-Builder
 
 go 1.17
 

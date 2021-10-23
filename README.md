@@ -1,6 +1,6 @@
 # iOS Signer Builder
 
-This is a free and simple builder server for [ios-signer-service](https://github.com/SignTools/ios-signer-service). This project is the self-hosted alternative of [ios-signer-ci](https://github.com/SignTools/ios-signer-ci) - instead of using a Continuous Integration (CI) provider, this server turns one of your very own Macs into a builder used to pull, sign, and upload any iOS apps to your `ios-signer-service`.
+This is a free and simple builder server for [SignTools](https://github.com/SignTools/SignTools). This project is the self-hosted alternative of [SignTools-CI](https://github.com/SignTools/SignTools-CI) - instead of using a Continuous Integration (CI) provider, this server turns one of your very own Macs into a builder used to pull, sign, and upload any iOS apps to your `SignTools` service.
 
 You only need to configure one builder. If you already configured a CI provider as your builder, you don't need to do anything here. This project is aimed at people who want to have a self-hosted builder.
 
@@ -30,11 +30,11 @@ All the steps should be performed on your builder Mac.
    - [Xcode](https://developer.apple.com/xcode/)
    - curl
    - p7zip (optional, but recommended)
-2. Download the correct [binary release](https://github.com/SignTools/ios-signer-builder/releases)
-3. Make the binary executable by running: `chmod +x ios-signer-builder`. Replace the name with the file that you just downloaded
-4. Download the archive of `ios-signer-ci` and extract it in the same folder as the binary from the previous step. These will be your **signing files**. The whole step can be accomplished with the following commands:
+2. Download the correct [binary release](https://github.com/SignTools/SignTools-Builder/releases)
+3. Make the binary executable by running: `chmod +x SignTools-Builder`. Replace the name with the file that you just downloaded
+4. Download the archive of `SignTools-CI` and extract it in the same folder as the binary from the previous step. These will be your **signing files**. The whole step can be accomplished with the following commands:
    ```bash
-   curl -sL https://github.com/SignTools/ios-signer-ci/archive/master.zip -o master.zip
+   curl -sL https://github.com/SignTools/SignTools-CI/archive/master.zip -o master.zip
    unzip master.zip
    rm master.zip
    ```
@@ -43,12 +43,12 @@ All the steps should be performed on your builder Mac.
 
 ## Running
 
-You need to make up an authentication key. It has to be at least 8 characters long. Note it down - you will need to put it in your `ios-signer-service`'s configuration file later on.
+You need to make up an authentication key. It has to be at least 8 characters long. Note it down - you will need to put it in your `SignTools` service's configuration file later on.
 
 To start the server, use the auth key and signing files from before and pass them as arguments:
 
 ```bash
-./ios-signer-builder -key "SOME_SECRET_KEY" -files "ios-signer-ci-master"
+./SignTools-Builder -key "SOME_SECRET_KEY" -files "SignTools-CI-master"
 ```
 
 The first time you run the server, you will have to [allow](https://www.macworld.co.uk/how-to/mac-app-unidentified-developer-3669596/) the unrecognized binary to run on your machine. After that it will run with no interruptions.
