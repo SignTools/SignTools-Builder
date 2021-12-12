@@ -30,6 +30,8 @@ All the steps should be performed on your builder Mac.
    - [Xcode](https://developer.apple.com/xcode/)
    - curl
    - p7zip (optional, but recommended)
+   - nodejs
+   - python3
 2. Download the correct [binary release](https://github.com/SignTools/SignTools-Builder/releases)
 3. Make the binary executable by running: `chmod +x SignTools-Builder`. Replace the name with the file that you just downloaded
 4. Download the archive of `SignTools-CI` and extract it in the same folder as the binary from the previous step. These will be your **signing files**. The whole step can be accomplished with the following commands:
