@@ -60,7 +60,7 @@ For reference, these all of the arguments that will be used:
 
 ```bash
   -files string
-    	Path to directory whose files will be included in each sign job. Should at least contain a signer script 'sign.sh'
+    	Path to directory whose files will be included in each sign job. Should at least contain a signer script 'sign.py'
   -host string
     	Listen host, empty for all
   -key string
