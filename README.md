@@ -29,8 +29,7 @@ All the steps should be performed on your builder Mac.
 1. Install the following dependencies:
    - [Xcode](https://developer.apple.com/xcode/)
    - curl
-   - p7zip (optional, but recommended)
-   - nodejs
+   - node
    - python3
 2. Download the correct [binary release](https://github.com/SignTools/SignTools-Builder/releases)
 3. Make the binary executable by running: `chmod +x SignTools-Builder`. Replace the name with the file that you just downloaded
