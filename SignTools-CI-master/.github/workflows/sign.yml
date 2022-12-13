@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sign:
+    runs-on: macos-12
+    timeout-minutes: 30
+    env:
+      SECRET_URL: "${{ secrets.SECRET_URL }}"
+      SECRET_KEY: "${{ secrets.SECRET_KEY }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Sign
+        run: |
+          sudo xcode-select -s /Applications/Xcode_14.0.1.app
+          ./sign.py
