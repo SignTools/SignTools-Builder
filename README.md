@@ -27,7 +27,7 @@ It is highly recommended that you dedicate this Mac exclusively as a builder. Us
 All the steps should be performed on your builder Mac.
 
 1. Install the following dependencies:
-   - [Xcode](https://developer.apple.com/xcode/)
+   - [fastlane](https://github.com/fastlane/fastlane)
    - curl
    - node
    - python3
