@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/google/uuid v1.3.1
 	github.com/labstack/echo/v4 v4.11.1
-	github.com/otiai10/copy v1.12.0
+	github.com/otiai10/copy v1.14.0
 	github.com/pkg/errors v0.9.1
 )
 
@@ -18,6 +18,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
 	golang.org/x/net v0.12.0 // indirect
+	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.10.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
