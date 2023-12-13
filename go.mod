@@ -3,7 +3,7 @@ module SignTools-Builder
 go 1.17
 
 require (
-	github.com/google/uuid v1.4.0
+	github.com/google/uuid v1.5.0
 	github.com/labstack/echo/v4 v4.11.3
 	github.com/otiai10/copy v1.14.0
 	github.com/pkg/errors v0.9.1
