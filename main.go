@@ -83,6 +83,8 @@ func mainE() error {
 				for key, val := range secrets.Load().(map[string]string) {
 					signEnv = append(signEnv, key+"="+val)
 				}
+				// Ensure Python prints are immediately flushed
+				signEnv = append(signEnv, "PYTHONUNBUFFERED=1")
 				cmd := exec.CommandContext(ctx, filepath.Join(workDir, *entrypoint))
 				cmd.Dir = workDir
 				cmd.Env = signEnv
