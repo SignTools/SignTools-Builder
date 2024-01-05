@@ -1,6 +1,6 @@
 # SignTools Builder
 
-This is a free and simple builder server for [SignTools](https://github.com/SignTools/SignTools). This project is the self-hosted alternative of [SignTools-CI](https://github.com/SignTools/SignTools-CI) - instead of using a Continuous Integration (CI) provider, this server turns one of your very own Macs into a builder used to pull, sign, and upload any iOS apps to your `SignTools` service.
+This project is a free and simple builder server for [SignTools](https://github.com/SignTools/SignTools). It is the self-hosted alternative of [SignTools-CI](https://github.com/SignTools/SignTools-CI) - instead of using a Continuous Integration (CI) provider, you turn one of your own Macs into a builder used to pull, sign, and upload any iOS apps to your `SignTools` service.
 
 You only need to configure one builder. If you already configured a CI provider as your builder, you don't need to do anything here. This project is aimed at people who want to have a self-hosted builder.
 
@@ -16,11 +16,9 @@ To prevent this, only deploy this server in a trusted environment, or even bette
 
 ### Side effects on your Mac
 
-While the server will do its best to keep changes to your Mac at a minimum, there is one important exception:
+While this server is not expected to interfere with the normal operation of your system, it does perform a substantial amount of work to get your apps signed, including making changes to the keychain.
 
-> :warning: **When signing with a developer account, your default keychain will be changed at the start of the process and restored afterwards. Certificate + provisioning profile is unaffected.**
-
-It is highly recommended that you dedicate this Mac exclusively as a builder. Using it for other purposes, especially at the same time as a sign job is running, could lead to undefined issues.
+> :warning: **It is highly recommended that you dedicate this Mac exclusively as a builder. Using it for other purposes, especially at the same time as a sign job is running, could lead to undefined issues.**
 
 ## Setup
 
@@ -53,8 +51,6 @@ To start the server, use the auth key and signing files from before and pass the
 ```
 
 The first time you run the server, you will have to [allow](https://www.macworld.co.uk/how-to/mac-app-unidentified-developer-3669596/) the unrecognized binary to run on your machine. After that it will run with no interruptions.
-
-Additionally, the first time you attempt to sign an app using a developer account, macOS will ask you to grant permission for UI automation. You need to grant this permission or signing can't work. The prompt may break the current signing process, so just re-upload the app on the web service once more - it will work the next time.
 
 For reference, these all of the arguments that will be used:
 
