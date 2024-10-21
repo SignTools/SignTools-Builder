@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.7
         with:
           token: ${{ secrets.API_GITHUB_TOKEN }}
 
@@ -22,12 +22,12 @@ jobs:
           echo "go_version=$GO_VERSION" >> $GITHUB_ENV
 
       - name: Setup Go environment
-        uses: actions/setup-go@v5.0.0
+        uses: actions/setup-go@v5.0.2
         with:
           go-version: "${{ env.go_version }}"
 
       - name: Binaries Release
-        uses: goreleaser/goreleaser-action@v5.0.0
+        uses: goreleaser/goreleaser-action@v6.0.0
         with:
           version: ~> 1.16.2
           args: release --rm-dist
