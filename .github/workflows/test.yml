@@ -11,14 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout with token
-        if: github.event_name != 'pull_request'
-        uses: actions/checkout@v7.0.0
-        with:
-          token: ${{ secrets.API_GITHUB_TOKEN }}
-
-      - name: Checkout without token
-        if: github.event_name == 'pull_request'
+      - name: Checkout
         uses: actions/checkout@v7.0.0
 
       - name: Fetch Go version
@@ -35,10 +28,3 @@ jobs:
       - name: Program Test
         run: go test ./...
 
-      - name: Version
-        if: github.event_name != 'pull_request'
-        uses: cycjimmy/semantic-release-action@v6.0.0
-        with:
-          semantic_version: 24.2.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
