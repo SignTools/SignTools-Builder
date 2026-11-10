@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Create release
         id: release
-        uses: googleapis/release-please-action@v5.0.0
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
           release-type: go
           target-branch: master
@@ -49,7 +49,7 @@ jobs:
 
     steps:
       - name: Checkout release
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.release-please.outputs.tag_name }}
           fetch-depth: 0
@@ -61,12 +61,12 @@ jobs:
           echo "go_version=$GO_VERSION" >> "$GITHUB_ENV"
 
       - name: Setup Go environment
-        uses: actions/setup-go@v7.0.0
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: "${{ env.go_version }}"
 
       - name: Binaries release
-        uses: goreleaser/goreleaser-action@v7.3.0
+        uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
         with:
           version: v2.20.0
           args: release --clean
