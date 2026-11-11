@@ -80,7 +80,9 @@ func mainE() error {
 					return errors.WithMessage(err, "copy sign files")
 				}
 				signEnv := os.Environ()
-				for key, val := range secrets.Load().(map[string]string) {
+				// none if the web service hasn't sent them yet, so the script fails cleanly instead
+				currentSecrets, _ := secrets.Load().(map[string]string)
+				for key, val := range currentSecrets {
 					signEnv = append(signEnv, key+"="+val)
 				}
 				// Ensure Python prints are immediately flushed
