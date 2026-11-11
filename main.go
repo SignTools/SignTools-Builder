@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/subtle"
 	"flag"
 	"fmt"
 	"github.com/google/uuid"
@@ -22,10 +23,8 @@ import (
 
 var secrets atomic.Value
 
-type StatusResponse struct {
-	PendingJobs uint64 `json:"pending_jobs"`
-	ActiveJobs  uint64 `json:"active_jobs"`
-}
+// lastRun is the most recent sign job's *runLog, shown by /status.
+var lastRun atomic.Pointer[runLog]
 
 func main() {
 	if err := mainE(); err != nil {
@@ -66,6 +65,8 @@ func mainE() error {
 			id := uuid.NewString()
 			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(*jobTimeout)*time.Minute)
 			log.Println(id, "Running sign job")
+			run := newRunLog()
+			lastRun.Store(run)
 			err := func() error {
 				tempDir, err := os.MkdirTemp(".", "ios-signer")
 				if err != nil {
@@ -90,13 +91,20 @@ func mainE() error {
 				cmd := exec.CommandContext(ctx, filepath.Join(workDir, *entrypoint))
 				cmd.Dir = workDir
 				cmd.Env = signEnv
-				if output, err := cmd.CombinedOutput(); err != nil {
-					return errors.WithMessage(errors.WithMessage(errors.New(string(output)), err.Error()), "sign script")
+				cmd.Stdout = run
+				cmd.Stderr = run
+				if err := cmd.Run(); err != nil {
+					if ctx.Err() != nil {
+						err = errors.WithMessage(err, "timed out")
+					}
+					return errors.WithMessage(err, "sign script")
 				}
 				return nil
 			}()
+			run.finish(err)
 			if err != nil {
 				log.Println(id, err)
+				log.Println(id, "Sign job output:\n"+run.String())
 			}
 			log.Println(id, "Finished sign job")
 			cancel()
@@ -108,15 +116,23 @@ func mainE() error {
 	e.HideBanner = true
 	e.Use(middleware.Logger())
 
-	keyAuth := middleware.KeyAuth(func(s string, c echo.Context) (bool, error) {
-		return s == *authKey, nil
-	})
+	// every route needs the key, which only the web service has, to keep the attack surface minimal
+	e.Use(middleware.KeyAuth(func(s string, c echo.Context) (bool, error) {
+		return subtle.ConstantTimeCompare([]byte(s), []byte(*authKey)) == 1, nil
+	}))
 
 	e.GET("/status", func(c echo.Context) error {
-		return c.JSONPretty(200, StatusResponse{
-			PendingJobs: uint64(len(jobChan)),
-			ActiveJobs:  uint64(len(workerChan)),
-		}, "  ")
+		res := c.Response()
+		res.Header().Set(echo.HeaderContentType, echo.MIMETextPlainCharsetUTF8)
+		res.Header().Set("Cache-Control", "no-store")
+		res.WriteHeader(200)
+		fmt.Fprintf(res, "Pending jobs: %d\nActive jobs: %d\n\n", len(jobChan), len(workerChan))
+		run := lastRun.Load()
+		if run == nil {
+			fmt.Fprintln(res, "No jobs have run yet.")
+			return nil
+		}
+		return run.follow(c.Request().Context(), res)
 	})
 	e.POST("/trigger", func(c echo.Context) error {
 		select {
@@ -125,7 +141,7 @@ func mainE() error {
 		default:
 			return errors.New("job queue full")
 		}
-	}, keyAuth)
+	})
 	e.POST("/secrets", func(c echo.Context) error {
 		bodyBytes, err := ioutil.ReadAll(c.Request().Body)
 		if err != nil {
@@ -143,7 +159,7 @@ func mainE() error {
 		}
 		secrets.Store(newSecrets)
 		return c.NoContent(200)
-	}, keyAuth)
+	})
 
 	return e.Start(fmt.Sprintf("%s:%d", *host, *port))
 }
