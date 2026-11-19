@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/google/uuid v1.6.0
-	github.com/labstack/echo/v4 v4.16.3
+	github.com/labstack/echo/v4 v4.16.5
 	github.com/otiai10/copy v1.14.1
 	github.com/pkg/errors v0.9.1
 )
